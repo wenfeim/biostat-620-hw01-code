@@ -1,0 +1,234 @@
+---
+title: "Biostat 620- hw01 code"
+author: "wenfei mao"
+date: "2024-02-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+*problem 2*
+
+*(a) Make a time series plot of each of the five variables in your data*
+```{r}
+#Time series plot of daily total screen time
+Sys.setlocale("LC_TIME", "en_US.UTF-8")
+library(xts)
+Total.ST.min <- c(649,468,639,628,701,478,604,701,674,460,558,564,635,538,591,380,511,378,831,623,765,346,
+                  466,601,608,657)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+time_series_ST_xts <- xts(Total.ST.min, order.by = date_seq)
+plot.xts(time_series_ST_xts, main = "Time series plot of daily total screen time", xlab = "Date", ylab =  "daily total screen time", type = "o", col = "blue", format = "%Y-%m-%d")
+```
+```{r}
+#Time series plot of daily total social screen time 
+Social.ST.min <- c(271,276,393,339,397,262,358,409,433,291,369,454,418,352,404,252,331,291,418,292,200,188,254,323,414,350)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+time_series_social_ST_xts <- xts(Social.ST.min, order.by = date_seq)
+plot.xts(time_series_social_ST_xts, main = "Time series plot of daily total social screen time", xlab = "Date", ylab = "daily total social screen time", type = "o", col = "blue", format = "%Y-%m-%d")
+```
+```{r}
+#Time series plot of daily number of pickups
+daily_num_pickups <- c(94,92,92,115,90,123,98,114,138,163,214,79,145,148,91,196,251,218,114,161,90,195,189,182,208,147)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+daily_num_pickups_xts <- xts(daily_num_pickups, order.by = date_seq)
+plot.xts(daily_num_pickups_xts, main = "Time series plot of daily number of pickups", xlab = "Date", ylab = "daily number of pickups", type = "o", col = "blue", format = "%Y-%m-%d")
+```
+```{r}
+#Time series plot of daily proportion of social screen time
+daily_proportion_ST.min <- c(0.42,0.59,0.62,0.54,0.57,0.55,0.59,0.58,0.64,0.63,0.66,0.80,0.66,0.65,0.68,
+                             0.66, 0.65,0.77,0.50,0.47,0.26,0.54,0.55,0.54,0.68,0.53)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+daily_proportion_ST.min_xts <- xts(daily_proportion_ST.min, order.by = date_seq)
+plot.xts(daily_proportion_ST.min_xts, main = "Time series plot of daily proportion of ST", xlab = "Date", ylab = "daily proporation of social screen time", type = "o", col = "blue", format = "%Y-%m-%d")
+```
+```{r}
+#Time series plot of daily duration per use
+daily_duration_per_use <- c(6.90,5.09,6.95,5.46,7.79,3.89,6.16,6.15,4.88,2.82,2.61,7.14,4.38,3.64,6.49,1.94,2.04,1.73,7.29,3.87, 8.50,1.77,2.47,3.30,2.92,4.47)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+daily_duration_per_use_xts <- xts(daily_duration_per_use, order.by = date_seq)
+plot.xts(daily_duration_per_use_xts, main = "Time series plot of daily duration per use ", xlab = "Date", ylab = "daily duration per use", type = "o", col = "blue", format = "%Y-%m-%d")
+```
+*b.Make pairwise scatterplots of five variables.*
+```{r}
+#install.packages("GGally")
+```
+```{r}
+library("GGally")
+data <- data.frame(Total.ST.min= c(649,468,639,628,701,478,604,701,674,460,558,564,635,538,591,380,511,378,831,623,765,346,466,601,608,657), Social.ST.min = c(271,276,393,339,397,262,358,409,433,291,369,454,418,352,404,252,331,291,418,292,200,188,
+                   254,323,414,350), daily_num_pickups = c(94,92,92,115,90,123,98,114,138,163,214,79,145,148,91,196,251,218,114,161,90,195,189,
+                                                          182,208,147),daily_proportion_ST.min =  c(0.42,0.59,0.62,0.54,0.57,0.55,0.59,0.58,0.64,0.63,0.66,0.80,0.66,0.65,0.68,
+                             0.66, 0.65,0.77,0.50,0.47,0.26,0.54,0.55,0.54,0.68,0.53),daily_duration_per_use = c(6.90,5.09,6.95,5.46,7.79,3.89,6.16,6.15,4.88,2.82,2.61,7.14,4.38,3.64,6.49,1.94,2.04,1.73,7.29,3.87, 8.50,1.77,2.47,3.30,2.92,4.47))
+ggpairs(data, columns = c("Total.ST.min","Social.ST.min","daily_num_pickups","daily_proportion_ST.min","daily_duration_per_use"), columnLabels =  c("Total.ST.min","Social.ST.min","daily_num_pickups","daily_proportion_ST.min","daily_duration_per_use")) + theme_bw()
+```
+*c.Make an occupation time curve for each of the five time series*
+```{r}
+#Occupation time curve for daily total screen time
+Total.ST.min <- c(649,468,639,628,701,478,604,701,674,460,558,564,635,538,591,380,511,378,831,623,765,346,
+                  466,601,608,657)
+ecdf_total_ST <- ecdf(Total.ST.min)
+c_value_total_ST <- 831
+prob_total_ST <- 1 - ecdf_total_ST(c_value_total_ST)
+par(mfrow = c(1,1))
+plot(ecdf_total_ST, col = "blue", main = "Occupation Time Curve for total screen time", xlab = "Values", ylab = "prob_total_ST")
+abline(v = c_value_total_ST, col = "red", lty = 2)
+```
+```{r}
+#Occupation time curve for daily total social screen time
+Social.ST.min <- c(271,276,393,339,397,262,358,409,433,291,369,454,418,352,404,252,331,291,418,292,200,188,254,323,414,350)
+ecdf_Social_ST <- ecdf(Social.ST.min)
+c_value_Social_ST <- 454
+prob_Social_ST <- 1 - ecdf_Social_ST(c_value_Social_ST)
+par(mfrow = c(1,1))
+plot(ecdf_Social_ST, col = "orange", main = "Occupation Time Curve for total social screen time", xlab = "Values", ylab = "prob_Social_ST")
+abline(v = c_value_Social_ST, col = "red", lty = 2)
+```
+```{r}
+#Occupation time curve for daily number of pickups
+daily_num_pickups <- c(94,92,92,115,90,123,98,114,138,163,214,79,145,148,91,196,251,218,114,161,90,195,189,182,208,147)
+ecdf_daily_num_pickups <- ecdf(daily_num_pickups)
+c_value_num_pickups <- 251
+prob_num_pickups <- 1 - ecdf_daily_num_pickups(c_value_num_pickups)
+par(mfrow = c(1,1))
+plot(ecdf_daily_num_pickups, col = "green", main = "Occupation Time Curve for number of pickups", xlab = "Values", ylab = "prob_num_pickups")
+abline(v = c_value_num_pickups, col = "red", lty = 2)
+```
+
+```{r}
+#Occupation time curve for daily proportion 0f social screen time
+daily_proportion_ST.min <- c(0.42,0.59,0.62,0.54,0.57,0.55,0.59,0.58,0.64,0.63,0.66,0.80,0.66,0.65,0.68,
+                             0.66, 0.65,0.77,0.50,0.47,0.26,0.54,0.55,0.54,0.68,0.53)
+ecdf_daily_proportion_ST <- ecdf(daily_proportion_ST.min)
+c_value_proportion_ST <- 0.80
+prob_proportion_ST <- 1 - ecdf_daily_proportion_ST(c_value_proportion_ST)
+par(mfrow = c(1,1))
+plot(ecdf_daily_proportion_ST, col = "black", main = "Occupation Time Curve for proportion of social ST", xlab = "Values", ylab = "prob_proportion_ST")
+abline(v = c_value_proportion_ST, col = "red", lty = 2)
+```
+
+```{r}
+#Occupation time curve for daily duration per use
+daily_duration_per_use <- c(6.90,5.09,6.95,5.46,7.79,3.89,6.16,6.15,4.88,2.82,2.61,7.14,4.38,3.64,6.49,1.94,2.04,1.73,7.29,3.87, 8.50,1.77,2.47,3.30,2.92,4.47)
+ecdf_daily_duration_per_use <- ecdf(daily_duration_per_use)
+c_value_duration_per_use <- 8.50
+prob_duration_per_use <- 1 - ecdf_daily_duration_per_use(c_value_duration_per_use)
+par(mfrow = c(1,1))
+plot(ecdf_daily_duration_per_use, col = "purple", main = "Occupation Time Curve for daily duration per use", xlab = "Values", ylab = "prob_duration_per_use")
+abline(v = c_value_duration_per_use, col = "red", lty = 2)
+```
+
+*(d) Use the R function acf to display the serial dependence for each of the five time series*
+```{r}
+Total.ST.min <- c(649,468,639,628,701,478,604,701,674,460,558,564,635,538,591,380,511,378,831,623,765,346,
+                  466,601,608,657)
+Social.ST.min <- c(271,276,393,339,397,262,358,409,433,291,369,454,418,352,404,252,331,291,418,292,200,188,
+                   254,323,414,350)
+daily_num_pickups <- c(94,92,92,115,90,123,98,114,138,163,214,79,145,148,91,196,251,218,114,161,90,195,189,
+                       182,208,147)
+daily_proportion_ST.min <- c(0.42,0.59,0.62,0.54,0.57,0.55,0.59,0.58,0.64,0.63,0.66,0.80,0.66,0.65,0.68,
+                             0.66, 0.65,0.77,0.50,0.47,0.26,0.54,0.55,0.54,0.68,0.53)
+daily_duration_per_use <- c(6.90,5.09,6.95,5.46,7.79,3.89,6.16,6.15,4.88,2.82,2.61,7.14,4.38,3.64,6.49,1.94,2.04,1.73,7.29,3.87, 8.50,1.77,2.47,3.30,2.92,4.47)
+acf(Total.ST.min, main = "ACF for Total.ST.min")
+acf(Social.ST.min, main = "ACF for Social.ST.min")
+acf(daily_num_pickups, main = "ACF for daily number of pickups")
+acf(daily_proportion_ST.min, main = "ACF for daily proportion of ST")
+acf(daily_duration_per_use, main = "ACF for daily duration per use")
+acf(Total.ST.min, main = "ACF for Total.ST.min", plot = FALSE)
+acf(Social.ST.min, main = "ACF for Social.ST.min", plot = FALSE)
+acf(daily_num_pickups, main = "ACF for daily number of pickups", plot = FALSE)
+acf(daily_proportion_ST.min, main = "ACF for daily proportion of ST", plot = FALSE)
+acf(daily_duration_per_use, main = "ACF for daily duration per use", plot = FALSE)
+```
+*problem 3*
+*b. Make a scatterplot of the first pickup data on a 24-hour clock circle.*
+```{r}
+#install.packages("circular")
+library(circular)
+```
+```{r}
+pickup_1st_degree <- c(155, 157.5, 173, 144.5, 159.5, 131, 145.5, 155.75, 148.5, 95, 108, 140.5, 143, 158.75, 106.25, 111.75, 105, 110, 150.5, 151, 150.25, 109.75, 105.25, 106.5, 105.25, 151.5)
+first_pickup_circular = circular(pickup_1st_degree, units = "degrees", template = "clock24")
+plot(first_pickup_circular, col = "blue")
+```
+*c. Make a histogram plot on the circle in that you may choose a suitable bin size to create stacking.For example, you may set a bin size at 2.5 degree, which corresponds an interval of 10 minutes.Adjust the bin size to create different forms of histogram, and explain the reason that you choose a particular value to report your final histogram plot.*
+```{r}
+plot(first_pickup_circular, stack = TRUE, bins = 2.5, col = "blue")
+```
+```{r}
+plot(first_pickup_circular, stack = TRUE, bins = 24, col = "blue")
+```
+```{r}
+plot(first_pickup_circular, stack = TRUE, bins = 30, col = "blue")
+```
+
+
+```{r}
+plot(first_pickup_circular, stack = TRUE, bins = 48, col = "blue")
+```
+```{r}
+plot(first_pickup_circular, stack = TRUE, bins = 60, col = "blue")
+```
+*problem 4*
+*b. Use the R function glm to estimate the rate parameter λ in which ln(St) is included in the model as an offset.*
+```{r}
+Yt_pickups <- c(94,92,92,115,90,123,98,114,138,163,214,79,145,148,91,196,251,218,114,161,90,195,189,
+                182,208,147)
+St <- c(10.82, 10.8, 10.65, 10.47, 11.68, 7.97, 10.07, 11.68, 11.23, 7.67, 9.3, 9.4, 10.58, 8.97, 9.85, 6.33, 8.52, 6.3, 13.85, 10.38, 12.75, 5.77, 7.77, 10.02, 10.13, 10.95)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+df <- data.frame(Date = date_seq, Yt = Yt_pickups)
+model <- glm(Yt ~ offset(log(St)), family = poisson, data = df)
+summary(model)
+```
+*c.Define two dummy variables: Xt = 1 for day t being a weekday and 0 for day t being a weekend day; and Zt = 1 for day t being January, 10 (the first day of the winter semester) or after, and 0 for day t before January, 10 (the winter holiday day).Repeat part (b) for a model ln(λ(t)) = β0+β1Xt+β2Zt, under which the rate parameter λ differs between weekdays and weekends as well as between the winter semester and the winter holiday. This model is called log-linear model. Cleary, this rate parameter depends on day t. Use the R function glm to estimate the regression coefficients and answer the following questions.(c.1) Is there data evidence for significantly different behavior of daily pickups between weekdays and weekends? Justify your answer using the significance level α = 0.05. (c.2) Is there data evidence for a significant change on the behavior of daily pickups after the winter semester began? Justify your answer using the significance level α = 0.05*
+```{r}
+Xt_values <- c(1,1,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,1)
+Zt_values <- c(0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
+lambda_t_values <- c(8.69,8.52,8.64,10.98,7.71,15.43,9.73,9.76,12.29,21.25,23.01,8.40,13.71,16.50,9.24,
+                     30.96,29.46,34.60,8.23,15.51,7.06,33.80,24.32,18.16,20.53,13.42)
+log_lambda = log(lambda_t_values)
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-01-26")
+date_seq <- seq(from = start_date, to = end_date, by = "day")
+df <- data.frame(Date = date_seq, Xt = Xt_values, Zt = Zt_values)
+model_log_linear <- glm(log_lambda ~ Xt + Zt, family = poisson, data = df)
+summary(model_log_linear)
+```
+*problem 5*
+*a. Use the R function mle.vonmises from the R package circular to obtain the estimates of the two model parameters µ and λ from your data of first pickups.*
+```{r}
+library(circular)
+pickup_1st_degree <- c(155, 157.5, 173, 144.5, 159.5, 131, 145.5, 155.75, 148.5, 95, 108, 140.5, 143, 158.75, 106.25, 111.75, 105, 110, 150.5, 151, 150.25, 109.75, 105.25, 106.5, 105.25, 151.5)
+mle_vonmises_result <- mle.vonmises(circular(pickup_1st_degree, units = "degrees"))
+mu = mle_vonmises_result$mu
+lambda = 1/mle_vonmises_result$kappa
+print(mu)
+print(lambda)
+```
+*b. Based on the estimated parameters from part (a), use the R function pvonmises from the R package circular to calculate the probability that your first pickup is 8:30AM or later.*
+```{r}
+library(circular)
+mle_vonmises_result <- mle.vonmises(circular(pickup_1st_degree, units = "degrees"))
+mu <- mle_vonmises_result$mu
+kappa <- 1/0.1520858
+value <- circular(127.5, units = "degrees")
+prob_8_30_AM_later <- 1 - pvonmises(value, mu = mu, kappa = kappa)
+print(prob_8_30_AM_later)
+```
+
+
+
